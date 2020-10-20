@@ -767,6 +767,8 @@ void WbRobot::writeConfigure(QDataStream &stream) {
   stream << (unsigned char)(mShowWindow->value() || mShowWindowMessage);
   stream << (unsigned char)(!windowFile().isEmpty());
   stream << (int)computeSimulationMode();
+  QByteArray coordinateSystem = WbWorld::instance()->worldInfo()->coordinateSystem().toUtf8();
+  stream.writeRawData(coordinateSystem.constData(), coordinateSystem.size() + 1);
 
   mShowWindowMessage = false;
   mUpdateWindowMessage = false;

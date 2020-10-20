@@ -103,6 +103,7 @@ typedef struct {
   int wwi_message_received_size;
   char *wwi_message_received;
   WbSimulationMode simulation_mode;  // WB_SUPERVISOR_SIMULATION_MODE_RUN, etc.
+  const char *coordinate_system;
 } WbRobot;
 
 static bool robot_init_was_done = false;
@@ -331,6 +332,7 @@ static void robot_configure(WbRequest *r) {
   robot.has_html_robot_window = request_read_uchar(r);
   wb_robot_window_load_library(robot.window_filename);
   robot.simulation_mode = request_read_int32(r);
+  robot.coordinate_system = request_read_string(r);
   // printf("configure done\n");
 }
 
@@ -1147,4 +1149,8 @@ const char *wb_robot_get_urdf(const char *prefix) {
 
   robot_mutex_unlock_step();
   return robot.urdf;
+}
+
+const char *wb_robot_get_coordinate_system() {
+  return robot.coordinate_system;
 }
